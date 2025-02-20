@@ -5,6 +5,7 @@ A little personal project for me to become familiar with all the underlying mech
 ## Content
 
 - Bigram Language Model (bigram.ipynb)
+- GPT Language Model (gpt.ipynb)
 
 ## Initial Setup (for MacOS)
 
