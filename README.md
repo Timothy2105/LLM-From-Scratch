@@ -29,3 +29,11 @@ jupyter notebook
 ```bash
 python -m ipykernel install --user --name=gpu_kernel --display-name "gpu kernel"
 ```
+
+3. Download training data:
+
+```bash
+https://huggingface.co/datasets/Skylion007/openwebtext
+```
+
+> Place all downloaded data into a `corpus` folder in the root file
