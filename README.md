@@ -32,8 +32,17 @@ python -m ipykernel install --user --name=gpu_kernel --display-name "gpu kernel"
 
 3. Download training data:
 
+> Download contents from `huggingface.co/datasets/Skylion007/openwebtext` and place into `subsets` folder
+
 ```bash
-https://huggingface.co/datasets/Skylion007/openwebtext
+pip install datasets
+python data_extract.py
 ```
 
-> Place all downloaded data into a `corpus` folder in the root file
+> Replace `path` in `data_process.py` with directory of your extracted data
+
+```bash
+python data_process.py
+```
+
+> You should now see `output_train.txt`, `output_val.txt`, and `vocab.txt` in a newly created `openwebtext` folder
