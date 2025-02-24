@@ -4,3 +4,4 @@
 /subsets
 /openwebtext
 .DS_Store
+/model_weights

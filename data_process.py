@@ -8,9 +8,6 @@ import os
 from glob import glob
 from pathlib import Path
 
-# TODO clean up comments, clean up name of the files saved to, move files to a openwebtext folder, rename openwebtext_train folder to data
-# TODO continue with project, CS106B
-
 def clean_text(text: str) -> str:
     """Removing extra whitespace."""
     return re.sub(r'\s+', ' ', text).strip()
@@ -87,8 +84,8 @@ def main():
     
     # save splits to txt files
     print("Saving splits to txt files...")
-    save_dataset_to_txt(train_dataset, output_dir / "output_train.txt")
-    save_dataset_to_txt(val_dataset, output_dir / "output_val.txt")
+    save_dataset_to_txt(train_dataset, output_dir / "train_split.txt")
+    save_dataset_to_txt(val_dataset, output_dir / "val_split.txt")
     
     # debugging stats
     print("\nDataset Statistics:")
@@ -96,8 +93,8 @@ def main():
     print(f"Character vocabulary size: {len(vocabulary)}")
     print(f"\nFiles saved:")
     print(f"- Vocabulary: {os.path.abspath(vocab_path)}")
-    print(f"- Training data: {os.path.abspath(output_dir / 'output_train.txt')}")
-    print(f"- Validation data: {os.path.abspath(output_dir / 'output_val.txt')}")
+    print(f"- Training data: {os.path.abspath(output_dir / 'train_split.txt')}")
+    print(f"- Validation data: {os.path.abspath(output_dir / 'val_split.txt')}")
 
 if __name__ == "__main__":
     main()
