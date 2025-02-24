@@ -24,6 +24,22 @@ def build_character_vocabulary(dataset: Dataset) -> set:
     
     return unique_chars
 
+def build_word_vocabulary(dataset: Dataset) -> set:
+    """Generate set of top 50k most frequent words"""
+    word_counts = Counter()
+    
+    # Count word frequencies across the dataset
+    for i in tqdm(range(len(dataset)), desc="Building word vocabulary"):
+        text = clean_text(dataset[i]['text'])
+        words = text.split()  # split into words
+        word_counts.update(words)
+    
+    # Get the top 50k most common words
+    vocab_size = 50000
+    most_common_words = set(word for word, _ in word_counts.most_common(vocab_size))
+    
+    return most_common_words
+
 def create_train_val_split(dataset: Dataset, 
                           val_size: float = 0.1,
                           seed: int = 42) -> Tuple[Dataset, Dataset]:
@@ -67,34 +83,46 @@ def main():
     dataset = concatenate_datasets(datasets_list)
     print(f"Loaded dataset with {len(dataset)} examples")
     
-    # build vocab
-    print("Building character vocabulary...")
-    vocabulary = build_character_vocabulary(dataset)
+    # # build vocab
+    # print("Building character vocabulary...")
+    # char_vocabulary = build_character_vocabulary(dataset)
+
+    # build word vocab
+    print("Building word vocabulary...")
+    word_vocabulary = build_word_vocabulary(dataset)
     
-    # save vocab to txt
-    print("Saving vocabulary...")
-    vocab_path = output_dir / 'vocab.txt'
-    with open(vocab_path, 'w', encoding='utf-8') as f:
-        for char in sorted(vocabulary):
-            f.write(f"{char}\n")
+    # save vocabularies to txt
+    print("Saving vocabularies...")
+    # char_vocab_path = output_dir / 'char_vocab.txt'
+    word_vocab_path = output_dir / 'word_vocab.txt'
     
-    # train-val split (90-10)
-    print("Creating train-validation split (90-10)...")
-    train_dataset, val_dataset = create_train_val_split(dataset, val_size=0.1)
+    # with open(char_vocab_path, 'w', encoding='utf-8') as f:
+    #     for char in sorted(char_vocabulary):
+    #         f.write(f"{char}\n")
+            
+    with open(word_vocab_path, 'w', encoding='utf-8') as f:
+        for word in sorted(word_vocabulary):
+            f.write(f"{word}\n")
     
-    # save splits to txt files
-    print("Saving splits to txt files...")
-    save_dataset_to_txt(train_dataset, output_dir / "train_split.txt")
-    save_dataset_to_txt(val_dataset, output_dir / "val_split.txt")
+    # # train-val split (90-10)
+    # print("Creating train-validation split (90-10)...")
+    # train_dataset, val_dataset = create_train_val_split(dataset, val_size=0.1)
+    
+    # # save splits to txt files
+    # print("Saving splits to txt files...")
+    # save_dataset_to_txt(train_dataset, output_dir / "train_split.txt")
+    # save_dataset_to_txt(val_dataset, output_dir / "val_split.txt")
     
     # debugging stats
     print("\nDataset Statistics:")
     print(f"Total examples: {len(dataset)}")
-    print(f"Character vocabulary size: {len(vocabulary)}")
+    # print(f"Character vocabulary size: {len(char_vocabulary)}")
+    print(f"Word vocabulary size: {len(word_vocabulary)}")
     print(f"\nFiles saved:")
-    print(f"- Vocabulary: {os.path.abspath(vocab_path)}")
-    print(f"- Training data: {os.path.abspath(output_dir / 'train_split.txt')}")
-    print(f"- Validation data: {os.path.abspath(output_dir / 'val_split.txt')}")
+    # print(f"- Character vocabulary: {os.path.abspath(char_vocab_path)}")
+    print(f"- Word vocabulary: {os.path.abspath(word_vocab_path)}")
+    # print(f"- Training data: {os.path.abspath(output_dir / 'train_split.txt')}")
+    # print(f"- Validation data: {os.path.abspath(output_dir / 'val_split.txt')}")
 
 if __name__ == "__main__":
     main()
